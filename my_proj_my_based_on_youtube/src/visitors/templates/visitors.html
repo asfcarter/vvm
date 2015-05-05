@@ -1,0 +1,8 @@
+
+<h1>Visitors</h1>
+{% for visitor in visitors %}
+<div>
+<h2><a href="/visitors/get/{{visitor.id}}/">{{visitor.email}}</a></h2>
+</div>
+{% endfor %}
+

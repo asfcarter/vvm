@@ -1,0 +1,23 @@
+body { 
+  padding-top: 70px; 
+  margin-bottom:80px;
+}
+
+.starter-template {
+  padding: 40px 15px;
+  text-align: center;
+}
+
+
+.bg-overdue{background-color:#ffa500}
+.bg-active{background-color:#00aa00}
+
+td.aaaa { 
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+  background-color:#0033aa; 
+}
+
+
+

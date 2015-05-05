@@ -1,0 +1,21 @@
+   rking Not Required:
+
+   Subject Line: Your Meeting at {SiteName} - {MeetingDate}
+   From / Reply-To: Vodafone Travel Team / travel@vodafone.co.uk
+
+   Hi {Firstname},
+
+   We are pleased to confirm your meeting with {Employee Host Name} at {Building Name}, {Site Name} on {MeetingDate} between {startTime} - {endTime}.
+
+   No Parking has been arranged for your visit. 
+
+   If you need help planning your travel arrangements, please check out nearby <a href="https://www.click2park.co.uk/Vodafone/visitors/alternative-transport-options.php">public transport options</a>.
+
+   If you need directions to {siteName}, please <a href="https://goo.gl/maps/HuksH">click here for an interactive map</a>.
+
+   We look forward to welcoming you at {siteName}.
+
+   Regards
+   The Vodafone Travel Team.
+
+   ------

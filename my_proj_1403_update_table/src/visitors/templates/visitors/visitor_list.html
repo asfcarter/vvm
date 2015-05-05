@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block container %}
+<div id="sec3" class="text-page">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <table class="table table-bordered table-hover table-striped">
+          <caption>Visitor List</caption>
+          <thead>
+            <tr>
+              <th class="col-sm-4" style="text-align: center;">Name</th>
+              <th class="col-sm-2" style="text-align: center;">Mobile</th>
+              <th class="col-sm-2" style="text-align: center;">Email</th>
+              <th class="col-sm-2" style="text-align: center;">Company</th>
+              <th class="col-sm-2" style="text-align: center;">Details</th>
+            </tr>
+          </thead>
+          <tbody class="table-striped">
+          {% for visitor in visitor_list %}
+          <tr class="bg-overdue">
+            <td style="vertical-align: middle;">{{ visitor.first_name }} {{visitor.last_name }}</td>
+            <td style="vertical-align: middle;">{{ visitor.mobile }} </td>
+            <td style="vertical-align: middle;">{{ visitor.email }} </td>
+            <td style="vertical-align: middle;">{{ visitor.company }} </td>
+            <td><a class="btn btn-primary" data-toggle="modal" data-target="#myModal">Details</a></td>
+          </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

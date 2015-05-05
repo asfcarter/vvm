@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ block.super }}Home{% endblock %}
+
+{% block navbar-left %}
+  {% include "_navbar.html" with active_link="home" %}
+{% endblock %}
+
+{% block navbar-right %}
+  {% if not user.is_authenticated %}
+<a class="btn btn-default" href="{% url 'accounts:login' %}" role="button">Log in</a>
+<a class="btn btn-primary" href="{% url 'accounts:signup' %}" role="button">Sign up</a>
+  {% else %}
+    {{ block.super }}
+  {% endif %}
+{% endblock %}
+
+{% block splash %}
+  <div class="jumbotron jumbotron-carousel corporate-jumbo">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8 col-sm-8">
+          <h1>{% include "_brandname.html" %}</h1>
+          <p>Complete visitor experience, from booking to departure.</p>
+	  <a class="btn btn-primary" href="{% url 'accounts:signup' %}" role="button">Sign up</a>
+        </div>
+        <div class="col-md-4 col-sm-4">
+
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock splash %}
+
+{% block content %}
+{% endblock content %}
+
+{% block container %}
+<!-- Benefits of the Django application -->
+<a name="about"></a>
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-4">
+      <h2>Visitors</h2>
+      <p>Visitors to Vodafone can sign up to request a meeting with a member of Vodafone staff. The meeting will not be scheduled until this booking is confirmed by the member of Vodafone staff hosting the meeting. Visitors will receive confirmation emails, which will also contain public transport details to encourage green travel plans.</p>
+      <p><a class="btn btn-primary" href="https://www.click2park.co.uk/Vodafone/visitors/visitor/" role="button">View details &raquo;</a></p>
+    </div>
+    <div class="col-lg-4">
+      <h2>Employee</h2>
+      <p>Vodafone employees can make visitor booking via a single consistemt user interface across all devices. This booking will automatically link to both the car park booking process for visitors and the room booking process. Vodafone employees can pre-register visitors, so their details remain on the system for future visites.</p>
+      <p><a class="btn btn-primary" href="https://www.click2park.co.uk/Vodafone/visitors/employee/" role="button">View details &raquo;</a></p>
+    </div>
+    <div class="col-lg-4">
+      <h2>Reception</h2>
+      <p>Vodafone reception can see all current and future visitor bookings. This allows for a seamless meet and greet service, with automated emails and text messages being generated to alert the Vodafone host that their visitor has arrived. The reception can also print lanyard id's directly from tablet devices.</p>
+      <p><a class="btn btn-primary" href="https://www.click2park.co.uk/Vodafone/visitors/bookings/" role="button">View details &raquo;</a></p>
+    </div>
+  </div>
+</div>
+
+{% endblock container %}
+
+{% block scripts %}
+<script src="{% static 'site/js/site.js' %}"></script>
+{% endblock scripts %}
+

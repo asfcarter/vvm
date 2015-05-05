@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block container %}
+<h2>Visitors</h2>
+<ul>
+  {% for visitor in object_list %}
+  <li>{{ visitor.email }}</li>
+  {% endfor %}
+</ul>
+{% endblock %}

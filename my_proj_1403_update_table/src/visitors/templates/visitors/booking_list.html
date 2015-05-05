@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+
+
+{% block container %}
+
+<div id="booking_table">
+</div>
+
+
+  <div id="clockbox" class="container">
+  </div>
+  
+  
+  <!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <META HTTP-EQUIV="refresh" CONTENT=""> 
+  <div class="modal-dialog">
+    <div class="modal-content">
+       <form class="form-horizontal">
+          <div class="modal-header">
+             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	        <span aria-hidden="true">&times;</span>
+	     </button>
+             <h4 style="display: inline;" class="modal-title">Visitor Name :</h4>
+             <h4 style="display: inline;" class="modal-title" id="myModalHeader" align="right"></h4>
+          </div>
+          <div class="modal-body">      
+             <div class="form-group">
+                <label for="inputEmail3" class="col-sm-2 control-label">Visitor Host:</label>
+                <div class="col-sm-10">
+                   <input type="text" class="form-control" id="InfoModalVisitorHost" placeholder="Host">
+                </div>
+             </div>
+             <div class="form-group">
+                <label for="inputEmail3" class="col-sm-2 control-label">Expected Arrival Time:</label>
+                <div class="col-sm-10">
+                   <input type="text" class="form-control" id="InfoModalVisitorETA" placeholder="--:--">
+                </div>
+             </div>
+             <div class="form-group">
+                <label for="inputEmail3" class="col-sm-2 control-label">Arrival Time:</label>
+                <div class="col-sm-10">
+                   <input type="text" class="form-control" id="InfoModalVisitorArrivalTime" placeholder="--:--">
+                </div>
+             </div>
+             <div class="form-group">
+                <label for="inputEmail3" class="col-sm-2 control-label">ANPR Status:</label>
+                <div class="col-sm-10">
+                   <input type="checkbox" class="form-control" id="InfoModalVisitorANPRStatus" placeholder="Email">
+                </div>
+             </div>
+             <div class="form-group">
+                <label for="inputEmail3" class="col-sm-2 control-label">Greeted Status:</label>
+                <div class="col-sm-10">
+                   <input type="checkbox" class="form-control pull-right" id="InfoModalVisitorGreetedStatus" placeholder="Email">
+                </div>
+             </div>
+             <div class="form-group">
+                <label for="inputEmail3" class="col-sm-2 control-label">Photo:</label>
+                <div class="col-sm-10">
+		   <img class="img-rounded img-thumbnail" src="mickey.jpg" alt="Passport Photo" style="width:88px;height:113px">
+                </div>
+             </div>
+          </div>
+          <div class="modal-footer">
+             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+             <button type="button" class="btn btn-primary">Save changes</button>
+          </div>	  	  
+        </form>    
+    </div>
+  </div>
+</div>
+  
+  
+{% endblock %}
+
+{% block scripts %}
+  <!-- This was created from http://www.ricocheting.com/code/javascript/html-generator/date-time-clock -->
+  <script type="text/javascript">
+  tday=new Array("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday");
+  tmonth=new Array("January","February","March","April","May","June","July","August","September","October","November","December");
+
+  function GetClock(){
+    var d=new Date();
+    var nday=d.getDay(),nmonth=d.getMonth(),ndate=d.getDate(),nyear=d.getYear(),nhour=d.getHours(),nmin=d.getMinutes(),nsec=d.getSeconds(),ap;
+
+    if(nhour==0){ap=" AM";nhour=12;}
+    else if(nhour<12){ap=" AM";}
+    else if(nhour==12){ap=" PM";}
+    else if(nhour>12){ap=" PM";nhour-=12;}
+
+    if(nyear<1000) nyear+=1900;
+    if(nmin<=9) nmin="0"+nmin;
+    if(nsec<=9) nsec="0"+nsec;
+
+    document.getElementById('clockbox').innerHTML=""+tday[nday]+", "+tmonth[nmonth]+" "+ndate+", "+nyear+" "+nhour+":"+nmin+":"+nsec+ap+"";
+  }
+
+  window.onload=function(){
+    GetClock();
+    setInterval(GetClock,1000);
+  }
+  
+  </script>
+
+  <script type="text/javascript">
+  function tabll() {
+      $.ajax({
+          type: "POST",
+	  url: "booking_table_update/",
+	  data: {},
+	  success: tableResult,
+	  dataType: 'html'
+      }); 
+  }
+  
+  $(function() {
+     tabll();
+  });         
+
+
+  
+  function tableResult(data, textStatus, jqXHR) {
+     $("#booking_table").html(data);
+  };
+  </script>
+ 
+
+ 
+{% endblock %}

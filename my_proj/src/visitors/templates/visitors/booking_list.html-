@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+
+{% block container %}
+<div id="sec3" class="text-page">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <table class="table table-bordered table-hover">
+          <caption>Booking List</caption>
+          <thead>
+            <tr>
+              <th class="col-sm-3" style="text-align: center;">Visitor name</th>
+              <th class="col-sm-3" style="text-align: center;">Host name</th>
+              <th class="col-sm-2" style="text-align: center;">Company</th>
+              <th class="col-sm-1" style="text-align: center;">ETA</th>
+              <th class="col-sm-1" style="text-align: center;">ANPR</th>
+              <th class="col-sm-1" style="text-align: center;">Greeted</th>
+              <th class="col-sm-1" style="text-align: center;">Print Lanyard</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for booking in booking_list %}
+	  <tr  data-name="{{ booking.visitor.first_name }} {{booking.visitor.last_name }}" data-host="{{ booking.host.first_name }} {{ booking.host.last_name }}" data-company="{{ booking.visitor.company }}" data-time="{{ booking.start_time }}" data-anpr="{{ booking.anpr }}" data-greeted="{{ booking.greeted }}"
+          {% if booking.visitor.first_name == "ghgfh" %}	  
+	  style="background-color:tomato">
+	  {% else %}
+	  style="background-color:lightgreen">
+	  {% endif %}
+            <td style="vertical-align: middle;">{{ booking.visitor.first_name }} {{booking.visitor.last_name }}</td>
+            <td style="vertical-align: middle;">{{ booking.host.first_name }} {{ booking.host.last_name }} </td>
+            <td style="vertical-align: middle;">{{ booking.visitor.company }} </td>
+            <td style="vertical-align: middle;">{{ booking.start_time|date:"H:m" }} </td>
+            <form action="{% url 'visitors:index' %}" method="post">
+            {% if booking.anpr %}
+            <td style="text-align: center; vertical-align: middle;"><input type="checkbox" id="blahA" value="1" disabled="disabled" checked="checked"/></td>
+	    {% else %}
+            <td style="text-align: center; vertical-align: middle;"><input type="checkbox" id="blahA" value="1" disabled="disabled"/></td>            
+	    {% endif %}            
+          </form>
+            {% if booking.greeted %}
+            <td style="text-align: center; vertical-align: middle;"><input type="checkbox" id="blahA" value="1" disabled="disabled" checked="checked"/></td>
+	    {% else %}
+            <td style="text-align: center; vertical-align: middle;"><input type="checkbox" id="blahA" value="1" disabled="disabled"/></td>            
+	    {% endif %}            
+   	    <td><a class="btn btn-primary InfoModal">Print</a></td>
+          </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <META HTTP-EQUIV="refresh" CONTENT=""> 
+  <div class="modal-dialog">
+    <div class="modal-content">
+       <form class="form-horizontal">
+          <div class="modal-header">
+             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	        <span aria-hidden="true">&times;</span>
+	     </button>
+             <h4 class="modal-title">Visitor Name :</h4>
+             <h4 class="modal-title" id="myModalHeader" align="right"></h4>
+          </div>
+          <div class="modal-body">      
+             <div class="form-group">
+                <label for="inputEmail3" class="col-sm-2 control-label">Visitor Host:</label>
+                <div class="col-sm-10">
+                   <input type="text" class="form-control" id="InfoModalVisitorHost" placeholder="Host">
+                </div>
+             </div>
+             <div class="form-group">
+                <label for="inputEmail3" class="col-sm-2 control-label">Expected Arrival Time:</label>
+                <div class="col-sm-10">
+                   <input type="text" class="form-control" id="InfoModalVisitorETA" placeholder="--:--">
+                </div>
+             </div>
+             <div class="form-group">
+                <label for="inputEmail3" class="col-sm-2 control-label">Arrival Time:</label>
+                <div class="col-sm-10">
+                   <input type="text" class="form-control" id="InfoModalVisitorArrivalTime" placeholder="--:--">
+                </div>
+             </div>
+             <div class="form-group">
+                <label for="inputEmail3" class="col-sm-2 control-label">ANPR Status:</label>
+                <div class="col-sm-10">
+                   <input type="checkbox" class="form-control" id="InfoModalVisitorANPRStatus" placeholder="Email">
+                </div>
+             </div>
+             <div class="form-group">
+                <label for="inputEmail3" class="col-sm-2 control-label">Greeted Status:</label>
+                <div class="col-sm-10">
+                   <input type="checkbox" class="form-control pull-right" id="InfoModalVisitorGreetedStatus" placeholder="Email">
+                </div>
+             </div>
+             <div class="form-group">
+                <label for="inputEmail3" class="col-sm-2 control-label">Photo:</label>
+                <div class="col-sm-10">
+		   <img class="img-rounded img-thumbnail" src="mickey.jpg" alt="Passport Photo" style="width:88px;height:113px">
+                </div>
+             </div>
+          </div>
+          <div class="modal-footer">
+             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+             <button type="button" class="btn btn-primary">Save changes</button>
+          </div>	  	  
+        </form>    
+    </div>
+  </div>
+</div>
+
+
+
+
+  <div id="clockbox">
+  </div>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+    $('.InfoModal').click(function(){
+        $('#myModalHeader').text($(this).closest("tr").attr("data-name"));
+	$('#InfoModalVisitorHost').val($(this).closest("tr").attr("data-host"));	
+        $('#InfoModalVisitorETA').val($(this).closest("tr").attr("data-time"));	
+
+        if($(this).closest("tr").attr("data-anpr") == "True") {
+	    $('#InfoModalVisitorANPRStatus').prop("checked", true);
+	}
+	else {
+	    $('#InfoModalVisitorANPRStatus').prop("checked", false);
+        }
+	
+        if($(this).closest("tr").attr("data-greeted") == "True") {
+            $('#InfoModalVisitorGreetedStatus').prop("checked", true);	
+	}
+	else {
+            $('#InfoModalVisitorGreetedStatus').prop("checked", false);	
+	}
+
+
+
+        $('#myModal').modal('show');
+    });
+</script>
+
+  <!-- This was created from http://www.ricocheting.com/code/javascript/html-generator/date-time-clock -->
+  <script type="text/javascript">
+  tday=new Array("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday");
+  tmonth=new Array("January","February","March","April","May","June","July","August","September","October","November","December");
+
+  function GetClock(){
+    var d=new Date();
+    var nday=d.getDay(),nmonth=d.getMonth(),ndate=d.getDate(),nyear=d.getYear(),nhour=d.getHours(),nmin=d.getMinutes(),nsec=d.getSeconds(),ap;
+
+    if(nhour==0){ap=" AM";nhour=12;}
+    else if(nhour<12){ap=" AM";}
+    else if(nhour==12){ap=" PM";}
+    else if(nhour>12){ap=" PM";nhour-=12;}
+
+    if(nyear<1000) nyear+=1900;
+    if(nmin<=9) nmin="0"+nmin;
+    if(nsec<=9) nsec="0"+nsec;
+
+    document.getElementById('clockbox').innerHTML=""+tday[nday]+", "+tmonth[nmonth]+" "+ndate+", "+nyear+" "+nhour+":"+nmin+":"+nsec+ap+"";
+  }
+
+  window.onload=function(){
+    GetClock();
+    setInterval(GetClock,1000);
+  }
+  </script>
+
+
+{% endblock %}

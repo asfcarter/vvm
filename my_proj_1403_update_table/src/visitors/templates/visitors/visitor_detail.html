@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block container %}
+<div id="sec3" class="text-page">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <h1>{{ object.email }}</h1>
+        <p>Firstname:{{ object.first_name }}</p>
+        <p>Last name: {{ object.last_name }}</p>
+        <p>Company  : {{ object.company }}</p>
+        <p>Date: {{ now|date }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

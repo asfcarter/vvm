@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+
+{% block container %}
+<div id="booking_table" class="text-page">
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <META HTTP-EQUIV="refresh" CONTENT=""> 
+  <div class="modal-dialog">
+    <div class="modal-content">
+       <form class="form-horizontal">
+          <div class="modal-header">
+             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	        <span aria-hidden="true">&times;</span>
+	     </button>
+             <h4 style="display: inline;" class="modal-title">Visitor Name :</h4>
+             <h4 style="display: inline;" class="modal-title" id="myModalHeader" align="right"></h4>
+          </div>
+          <div class="modal-body">      
+             <div class="form-group">
+                <label for="inputEmail3" class="col-sm-2 control-label">Visitor Host:</label>
+                <div class="col-sm-10">
+                   <input type="text" class="form-control" id="InfoModalVisitorHost" placeholder="Host">
+                </div>
+             </div>
+             <div class="form-group">
+                <label for="inputEmail3" class="col-sm-2 control-label">Expected Arrival Time:</label>
+                <div class="col-sm-10">
+                   <input type="text" class="form-control" id="InfoModalVisitorETA" placeholder="--:--">
+                </div>
+             </div>
+             <div class="form-group">
+                <label for="inputEmail3" class="col-sm-2 control-label">Arrival Time:</label>
+                <div class="col-sm-10">
+                   <input type="text" class="form-control" id="InfoModalVisitorArrivalTime" placeholder="--:--">
+                </div>
+             </div>
+             <div class="form-group">
+                <label for="inputEmail3" class="col-sm-2 control-label">ANPR Status:</label>
+                <div class="col-sm-10">
+                   <input type="checkbox" class="form-control" id="InfoModalVisitorANPRStatus" placeholder="Email">
+                </div>
+             </div>
+             <div class="form-group">
+                <label for="inputEmail3" class="col-sm-2 control-label">Greeted Status:</label>
+                <div class="col-sm-10">
+                   <input type="checkbox" class="form-control pull-right" id="InfoModalVisitorGreetedStatus" placeholder="Email">
+                </div>
+             </div>
+             <div class="form-group">
+                <label for="inputEmail3" class="col-sm-2 control-label">Photo:</label>
+                <div class="col-sm-10">
+		   <img class="img-rounded img-thumbnail" src="mickey.jpg" alt="Passport Photo" style="width:88px;height:113px">
+                </div>
+             </div>
+          </div>
+          <div class="modal-footer">
+             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+             <button type="button" class="btn btn-primary">Save changes</button>
+          </div>	  	  
+        </form>    
+    </div>
+  </div>
+</div>
+
+
+
+
+  <div id="clockbox" class="container">
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  <!-- This was created from http://www.ricocheting.com/code/javascript/html-generator/date-time-clock -->
+  <script type="text/javascript">
+  tday=new Array("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday");
+  tmonth=new Array("January","February","March","April","May","June","July","August","September","October","November","December");
+
+  function GetClock(){
+    var d=new Date();
+    var nday=d.getDay(),nmonth=d.getMonth(),ndate=d.getDate(),nyear=d.getYear(),nhour=d.getHours(),nmin=d.getMinutes(),nsec=d.getSeconds(),ap;
+
+    if(nhour==0){ap=" AM";nhour=12;}
+    else if(nhour<12){ap=" AM";}
+    else if(nhour==12){ap=" PM";}
+    else if(nhour>12){ap=" PM";nhour-=12;}
+
+    if(nyear<1000) nyear+=1900;
+    if(nmin<=9) nmin="0"+nmin;
+    if(nsec<=9) nsec="0"+nsec;
+
+    document.getElementById('clockbox').innerHTML=""+tday[nday]+", "+tmonth[nmonth]+" "+ndate+", "+nyear+" "+nhour+":"+nmin+":"+nsec+ap+"";
+  }
+
+  window.onload=function(){
+    GetClock();
+    update_table();
+    setInterval(GetClock,1000);
+  }
+  </script>
+
+  <script type="text/javascript">
+    $(function () {
+      var table_data  = '<div class="container">';
+      table_data += '  <div class="row">';
+      table_data += '    <div class="col-md-12 text-center">';
+      table_data += '      <table class="table table-bordered table-hover ">';
+      table_data += '        <caption>Booking List</caption>';
+      table_data += '        <thead>';
+      table_data += '          <tr>';
+      table_data += '            <th class="col-xs-3" style="text-align: center;">Visitor name</th>';
+      table_data += '            <th class="col-xs-3" style="text-align: center;">Host name</th>';
+      table_data += '            <th class="col-xs-2" style="text-align: center;">Company</th>';
+      table_data += '            <th class="col-xs-1" style="text-align: center;">ETA</th>';
+      table_data += '            <th class="col-xs-1" style="text-align: center;">ANPR</th>';
+      table_data += '            <th class="col-xs-1" style="text-align: center;">Greeted</th>';
+      table_data += '            <th class="col-xs-1" style="text-align: center;">Print Lanyard</th>';
+      table_data += '          </tr>';
+      table_data += '        </thead>';
+      table_data += '      </table>';
+      table_data += '    <div style="height:250px; overflow-y:auto;">';
+       
+      table_data += '      <table class="table table-bordered table-hover ">';
+      table_data += '        <tbody>';
+      table_data += '        {% for booking in booking_list %}';
+      table_data += '          <tr  data-name="{{ booking.visitor.first_name }} {{booking.visitor.last_name }}" data-host="{{ booking.host.first_name }} {{ booking.host.last_name }}" data-company="{{ booking.visitor.company }}" data-time="{{ booking.start_time }}" data-anpr="{{ booking.anpr }}" data-greeted="{{ booking.greeted }}"';
+      table_data += '        {% if booking.is_past_due %}';	  
+      table_data += '          style="background-color:tomato">';
+      table_data += '        {% else %}';
+      table_data += '          style="background-color:lightgreen">';
+      table_data += '        {% endif %}';
+      table_data += '          <td class="col-xs-3" style="vertical-align: middle;">{{ booking.visitor.first_name }} {{booking.visitor.last_name }}</td>';
+      table_data += '          <td class="col-xs-3" style="vertical-align: middle;">{{ booking.host.first_name }} {{ booking.host.last_name }} </td>';
+      table_data += '          <td class="col-xs-2" style="vertical-align: middle;">{{ booking.visitor.company }} </td>';
+      table_data += '          <td class="col-xs-1" style="vertical-align: middle;">{{ booking.start_time }} </td>';
+      table_data += '        {% if booking.anpr %}';
+      table_data += '          <td class="col-xs-1" style="text-align: center; vertical-align: middle;"><input type="checkbox" id="blahA" value="1" disabled="disabled" checked="checked"/></td>';
+      table_data += '        {% else %}';
+      table_data += '          <td class="col-xs-1" style="text-align: center; vertical-align: middle;"><input type="checkbox" id="blahA" value="1" disabled="disabled"/></td>';            
+      table_data += '        {% endif %}';            
+      table_data += '        {% if booking.greeted %}';
+      table_data += '          <td class="col-xs-1" style="text-align: center; vertical-align: middle;"><input type="checkbox" id="blahA" value="1" disabled="disabled" checked="checked"/></td>';
+      table_data += '        {% else %}';
+      table_data += '          <td class="col-xs-1" style="text-align: center; vertical-align: middle;"><input type="checkbox" id="blahA" value="1" disabled="disabled"/></td>';            
+      table_data += '        {% endif %}';            
+      table_data += '          <td class="col-xs-1"><a class="btn btn-primary InfoModal">Print</a></td>';
+      table_data += '          </tr>';
+      table_data += '        {% endfor %}';
+      table_data += '        </tbody>';
+      table_data += '      </table>';
+      table_data += '    </div>';
+      table_data += '    </div>';
+      table_data += '  </div>';
+      table_data += '</div>';
+
+  $("#booking_table").html(table_data);
+      
+  });
+  </script>
+  
+  <script type="text/javascript">
+        $(function () {
+
+       $('.InfoModal').click(function(){
+        $('#myModalHeader').text($(this).closest("tr").attr("data-name"));
+	$('#InfoModalVisitorHost').val($(this).closest("tr").attr("data-host"));	
+        $('#InfoModalVisitorETA').val($(this).closest("tr").attr("data-time"));	
+
+        if($(this).closest("tr").attr("data-anpr") == "True") {
+	    $('#InfoModalVisitorANPRStatus').prop("checked", true);
+	}
+	else {
+	    $('#InfoModalVisitorANPRStatus').prop("checked", false);
+        }
+	
+        if($(this).closest("tr").attr("data-greeted") == "True") {
+            $('#InfoModalVisitorGreetedStatus').prop("checked", true);	
+	}
+	else {
+            $('#InfoModalVisitorGreetedStatus').prop("checked", false);	
+	}
+
+
+
+        $('#myModal').modal('show');
+    });
+  });
+
+  </script>
+
+
+
+{% endblock %}
